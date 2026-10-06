@@ -1,0 +1,1368 @@
+/* Orbit Day / Night. Presentation overrides are grouped by shared pattern. */
+:root {
+  --canvas: #f7f7f5;
+  --sidebar: #f0f0ed;
+  --surface: #fff;
+  --surface-raised: #f1f1ef;
+  --text: #202023;
+  --text-secondary: #67676f;
+  --text-muted: #686870;
+  --border: #e1e1dd;
+  --grid: #ededeb;
+  --accent: #7657d6;
+  --accent-soft: #eee9ff;
+  --accent-text: #6543bc;
+  --hover: #e9e9e6;
+  --focus: #7657d6;
+  --shadow: 0 2px 3px #20202303;
+  --dialog-shadow: 0 16px 60px #20202324;
+  --backdrop: #20202332;
+  --event-text: #24242d;
+  --deadline-surface: #f8f5ed;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --course-fill: var(--course-day);
+  --course-ink: #24242d;
+}
+[data-theme="dark"] {
+  --canvas: #0d0d12;
+  --sidebar: #111117;
+  --surface: #15151c;
+  --surface-raised: #1c1c25;
+  --text: #f2f1f6;
+  --text-secondary: #aaa8b5;
+  --text-muted: #a19eae;
+  --border: #2b2b36;
+  --grid: #23232e;
+  --accent: #b49bf7;
+  --accent-soft: #2b2341;
+  --accent-text: #c0a9fa;
+  --hover: #24242f;
+  --focus: #b49bf7;
+  --shadow: 0 2px 3px #0000000a;
+  --dialog-shadow: 0 18px 70px #00000066;
+  --backdrop: #06060a55;
+  --event-text: #f6f5fb;
+  --deadline-surface: #25221d;
+  --course-fill: var(--course-night);
+  --course-ink: #f6f5fb;
+}
+/* Quiet shell: preserve navigation architecture and all responsive modes. */
+@media (min-width: 901px) {
+  .app-shell {
+    grid-template-columns: 196px minmax(0, 1fr);
+  }
+  .sidebar {
+    padding: 28px 14px 18px;
+  }
+}
+.brand {
+  font-size: 26px;
+  gap: 9px;
+}
+.navigation {
+  gap: 3px;
+}
+.nav-link {
+  min-height: 40px;
+  padding: 10px 12px;
+  font-size: 12px;
+  border-radius: 8px;
+}
+.nav-link.is-active {
+  background: color-mix(in srgb, var(--accent-soft) 70%, var(--sidebar));
+}
+.active-dot {
+  width: 4px;
+  height: 4px;
+}
+.sidebar-profile small {
+  font-size: 10px;
+}
+.nav-caption {
+  font-size: 8px;
+  letter-spacing: 1.35px;
+}
+.topbar {
+  height: 58px;
+  border-bottom-color: var(--border);
+}
+main {
+  padding-top: 28px;
+}
+.page-heading {
+  margin-bottom: 26px;
+}
+.page-heading h1 {
+  font-size: 30px;
+  letter-spacing: -1px;
+  font-weight: 520;
+}
+.eyebrow {
+  font-size: 9px;
+  letter-spacing: 1.35px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+.page-subtitle {
+  margin-top: 9px;
+}
+.surface {
+  box-shadow: var(--shadow);
+}
+.button {
+  min-height: 34px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition:
+    background var(--duration-fast),
+    border-color var(--duration-fast),
+    transform var(--duration-fast);
+}
+.button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+.button--primary {
+  background: var(--accent-soft);
+  color: var(--accent-text);
+  border-color: color-mix(in srgb, var(--accent) 28%, var(--border));
+}
+.button--secondary {
+  background: var(--surface);
+}
+.icon-button {
+  height: 32px;
+  width: 32px;
+  min-height: 32px;
+}
+.orbit-form
+  input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+.orbit-form select,
+.orbit-form textarea {
+  border-radius: 8px;
+  background: var(--surface);
+}
+.orbit-form input:hover,
+.orbit-form select:hover {
+  border-color: color-mix(in srgb, var(--text-muted) 40%, var(--border));
+}
+.orbit-form label {
+  font-weight: 450;
+}
+.dialog {
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: var(--dialog-shadow);
+}
+.dialog::backdrop {
+  background: var(--backdrop);
+  backdrop-filter: blur(2px);
+}
+.dialog h2 {
+  font-size: 21px;
+}
+@media (min-width: 960px) {
+  .anchored-editor {
+    width: 390px;
+    max-height: calc(100dvh - 40px);
+  }
+  .anchored-editor::backdrop {
+    backdrop-filter: none;
+  }
+}
+/* Paired course identities; the stored hex value is a compatibility token. */
+.course-swatch {
+  background: var(--course-fill);
+  border: 1px solid
+    color-mix(in srgb, var(--course-fill) 70%, var(--text-secondary));
+  width: 9px;
+  min-width: 9px;
+  border-radius: 3px;
+}
+.orbit-form .palette-picker {
+  display: block;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+.palette-picker legend {
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+.palette-options {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 9px;
+}
+.orbit-form .palette-options label {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 3px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  font-size: 10px;
+  cursor: pointer;
+}
+.orbit-form .palette-options input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  margin: 0;
+}
+.palette-swatch {
+  background: var(--course-fill);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid
+    color-mix(in srgb, var(--course-fill) 70%, var(--text-secondary));
+}
+.palette-options label:has(:checked) {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.palette-options label:has(:checked) .palette-swatch::after {
+  content: "✓";
+  display: grid;
+  place-items: center;
+  height: 100%;
+  color: var(--course-ink);
+  font-size: 14px;
+}
+.palette-options label:has(:focus-visible) {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+.palette-options label:has(:disabled) {
+  opacity: 0.6;
+  cursor: default;
+}
+/* Calendar: wide scheduling surface, generous dates and quiet gridlines. */
+.home-layout {
+  grid-template-columns: minmax(0, 1fr) 232px;
+  gap: 22px;
+  align-items: start;
+}
+.orbit-calendar {
+  padding: 0 18px 16px;
+  border-radius: 16px;
+}
+.orbit-calendar .calendar-toolbar {
+  padding-top: 20px;
+  padding-bottom: 15px;
+}
+.orbit-calendar .calendar-month {
+  font-size: 22px;
+  letter-spacing: -0.6px;
+  font-weight: 500;
+}
+.calendar-views {
+  border: 0;
+  border-radius: 9px;
+  background: var(--surface-raised);
+  padding: 3px;
+}
+.calendar-views button {
+  border-radius: 7px;
+  padding: 7px 14px;
+}
+.calendar-views button[aria-pressed="true"] {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 1px 3px #00000010;
+}
+.calendar-views button:hover:not([aria-pressed="true"]) {
+  background: var(--hover);
+}
+.calendar-command-row {
+  padding-bottom: 1px;
+}
+.calendar-feedback {
+  font-size: 10px;
+  min-height: 29px;
+  padding-block: 8px;
+}
+.functional-calendar {
+  --fc-border-color: var(--grid);
+  --fc-today-bg-color: color-mix(in srgb, var(--accent) 3%, var(--surface));
+  --fc-neutral-bg-color: var(--surface);
+}
+.fc .fc-col-header-cell {
+  padding: 8px 4px 12px;
+}
+.calendar-day-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  border-radius: 9px;
+  padding: 9px 2px;
+}
+.calendar-day-label span {
+  font-size: 10px;
+  font-weight: 450;
+}
+.calendar-day-label strong {
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.15;
+  color: var(--text);
+  letter-spacing: -0.6px;
+}
+.fc .fc-day-today .calendar-day-label {
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+.fc .fc-day-today .calendar-day-label strong {
+  color: var(--accent-text);
+}
+.fc .fc-timegrid-slot {
+  height: 30px;
+}
+.fc .fc-timegrid-slot-minor {
+  border-top-color: color-mix(in srgb, var(--grid) 55%, transparent);
+  border-top-style: solid;
+}
+.fc .fc-timegrid-slot-label {
+  font-size: 10px;
+  padding-right: 9px;
+}
+.fc .fc-timegrid-event {
+  border-radius: 9px;
+  padding: 4px 5px;
+  border-width: 1px;
+  box-shadow: none;
+}
+.fc .fc-event {
+  transition:
+    box-shadow var(--duration-fast),
+    filter var(--duration-fast);
+}
+.fc .fc-event:hover {
+  filter: brightness(0.98);
+  box-shadow: 0 2px 8px #00000016;
+}
+[data-theme="dark"] .fc .fc-event:hover {
+  filter: brightness(1.12);
+}
+.fc .fc-event-selected {
+  box-shadow: 0 0 0 2px var(--focus);
+}
+.fc .fc-event-resizer {
+  opacity: 0.5;
+}
+.fc .fc-event:hover .fc-event-resizer {
+  opacity: 1;
+}
+.fc .fc-timegrid-now-indicator-line {
+  border-color: var(--accent);
+  border-width: 1px;
+}
+.fc .fc-timegrid-now-indicator-arrow {
+  border-color: var(--accent);
+}
+.orbit-event {
+  gap: 2px;
+  padding: 1px;
+  line-height: 1.35;
+}
+.orbit-event strong {
+  font-size: 11px;
+  font-weight: 600;
+}
+.orbit-event span,
+.orbit-event small {
+  font-size: 10px;
+}
+.fc [class*="course-tone-"] {
+  background: var(--course-fill);
+  border-color: color-mix(
+    in srgb,
+    var(--course-fill) 82%,
+    var(--text-secondary)
+  );
+}
+.fc [class*="course-tone-"] .fc-event-main,
+.fc .fc-daygrid-event {
+  color: var(--course-ink);
+}
+.fc .fc-daygrid-dot-event {
+  padding: 3px 5px;
+  border-radius: 5px;
+}
+.fc .orbit-task-marker {
+  background: var(--surface) !important;
+  border: 1px dashed var(--text-muted);
+  border-left: 2px solid var(--text-muted);
+}
+.fc .orbit-task-marker .fc-event-main,
+.fc .orbit-task-marker {
+  color: var(--text);
+}
+.fc .orbit-assessment-marker {
+  background: var(--deadline-surface) !important;
+  border: 1px solid var(--border);
+  border-left: 4px double var(--accent);
+  color: var(--text);
+}
+.fc .orbit-assessment-marker .fc-event-main {
+  color: var(--text);
+}
+.support-column {
+  gap: 20px;
+}
+.mini-calendar {
+  padding: 18px;
+}
+.mini-grid button {
+  border-radius: 7px;
+}
+.next-up-placeholder {
+  padding: 18px;
+}
+.upcoming-event {
+  padding: 12px 0;
+  margin: 0;
+  border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+  gap: 11px;
+}
+.upcoming-event:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+.upcoming-event strong {
+  line-height: 1.45;
+  font-size: 12px;
+  font-weight: 500;
+}
+.upcoming-event small {
+  line-height: 1.5;
+  font-size: 10px;
+}
+.upcoming-event .next-kind {
+  margin: 0 0 3px;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+.next-type {
+  font-size: 18px;
+  color: var(--accent-text);
+  padding-top: 2px;
+}
+/* Concise Home summaries; scheduling stays the largest section. */
+.home-summaries {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 26px;
+}
+.summary-tile {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 17px 19px;
+  background: var(--surface);
+  min-width: 0;
+}
+.summary-tile > span {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+.summary-tile > strong {
+  display: block;
+  font-size: 28px;
+  letter-spacing: -0.9px;
+  line-height: 1.2;
+  font-weight: 500;
+  margin: 13px 0 8px;
+  font-variant-numeric: tabular-nums;
+}
+.summary-tile strong small {
+  font-size: 17px;
+  margin-left: 2px;
+}
+.summary-tile > p {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.summary-tile a:hover {
+  color: var(--accent-text);
+}
+.summary-tile progress {
+  height: 3px;
+  margin-top: 14px;
+}
+.summary-focus-control .focus-summary {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  flex-wrap: wrap;
+  gap: 0;
+}
+.summary-focus-control .focus-summary .eyebrow,
+.summary-focus-control .focus-summary strong {
+  display: none;
+}
+.summary-focus-control .focus-summary small {
+  font-size: 10px;
+}
+.summary-focus-control .focus-summary .button {
+  padding: 5px 0 0;
+  min-height: 24px;
+  font-size: 10px;
+}
+.home-study {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 232px;
+  gap: 22px;
+  margin-top: 24px;
+}
+.weekly-focus {
+  padding: 22px 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+.section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.section-title h2 {
+  margin: 0;
+  font-weight: 500;
+  font-size: 14px;
+}
+.section-title p {
+  font-size: 10px;
+  color: var(--text-secondary);
+  margin: 6px 0 0;
+  line-height: 1.6;
+}
+.section-title > strong {
+  font-size: 22px;
+  font-weight: 500;
+  white-space: nowrap;
+  letter-spacing: -0.5px;
+}
+.focus-bars {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 18px;
+  list-style: none;
+  padding: 20px 0 0;
+  margin: 0;
+}
+.focus-bars li {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 11px;
+}
+.bar-track {
+  height: 110px;
+  display: flex;
+  align-items: flex-end;
+  border-bottom: 1px solid var(--border);
+  margin: 7px 0 10px;
+  background: repeating-linear-gradient(
+    to top,
+    transparent 0,
+    transparent 35px,
+    var(--grid) 36px,
+    transparent 37px
+  );
+}
+.focus-bar {
+  width: 100%;
+  max-width: 48px;
+  margin-inline: auto;
+  background: var(--accent);
+  border-radius: 7px 7px 2px 2px;
+  opacity: 0.85;
+}
+.bar-value {
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+.weekly-focus > .field-help {
+  margin: 17px 0 0;
+  font-size: 10px;
+}
+.task-progress-panel {
+  padding: 20px 0;
+}
+.task-progress-panel .section-title span {
+  font-size: 10px;
+  color: var(--text-secondary);
+}
+.task-progress-panel > strong {
+  display: block;
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: -0.8px;
+  margin-top: 24px;
+}
+.task-progress-panel strong small {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-weight: 400;
+  letter-spacing: 0;
+  margin-left: 3px;
+}
+.task-progress-track {
+  height: 12px;
+  border-radius: 5px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  margin: 18px 0;
+}
+.task-progress-track span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}
+.task-progress-panel > p {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 10px;
+  color: var(--text-secondary);
+}
+.task-progress-panel b {
+  color: var(--text);
+  font-weight: 500;
+  display: block;
+  margin-top: 6px;
+  font-size: 15px;
+}
+/* Secondary pages share the same typography and lighter grouping. */
+.course-row h2 {
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.3px;
+}
+.course-list {
+  padding-inline: 22px;
+}
+.schedule-row {
+  background: var(--canvas);
+  border-radius: 9px;
+  border: 1px solid var(--border);
+}
+.grade-course-row {
+  background: var(--surface);
+  border-radius: 12px;
+}
+.grade-metrics dd,
+.grade-metrics-detail dd {
+  font-weight: 500;
+  letter-spacing: -0.6px;
+  font-variant-numeric: tabular-nums;
+}
+.grade-metrics-detail {
+  border-radius: 12px;
+}
+.task-row {
+  padding-block: 15px;
+}
+.task-check {
+  border-radius: 5px;
+}
+.focus-stage {
+  border-radius: 16px;
+  padding: 28px;
+}
+.focus-clock {
+  font-weight: 350;
+  letter-spacing: -3px;
+}
+.focus-modes {
+  padding: 3px;
+  border-radius: 9px;
+  width: fit-content;
+  margin-inline: auto;
+  background: var(--surface-raised);
+}
+.focus-modes .button[aria-pressed="true"] {
+  background: var(--surface);
+  color: var(--text);
+  border-color: transparent;
+}
+.notes-workspace {
+  border-radius: 14px;
+}
+.note-library {
+  background: var(--canvas);
+}
+.note-list-item.is-selected {
+  background: var(--accent-soft);
+  border-color: transparent;
+}
+.note-title {
+  font-weight: 500;
+}
+.note-toolbar {
+  gap: 3px;
+}
+.settings-section,
+.semester-item {
+  border-radius: 12px;
+}
+.auth-card {
+  border-radius: 16px;
+}
+@media (max-width: 1100px) {
+  .home-layout,
+  .home-study {
+    grid-template-columns: minmax(0, 1fr) 205px;
+    gap: 16px;
+  }
+  .summary-tile {
+    padding: 15px;
+  }
+  .summary-tile > strong {
+    font-size: 25px;
+  }
+}
+@media (max-width: 900px) {
+  .home-summaries {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .home-layout,
+  .home-study {
+    grid-template-columns: 1fr;
+  }
+  .task-progress-panel {
+    max-width: 440px;
+  }
+  .page-heading h1 {
+    font-size: 27px;
+  }
+}
+@media (max-width: 560px) {
+  .home-summaries {
+    gap: 9px;
+  }
+  .summary-tile {
+    padding: 13px;
+  }
+  .summary-tile > strong {
+    font-size: 23px;
+  }
+  .focus-bars {
+    gap: 8px;
+  }
+  .weekly-focus {
+    padding: 18px 14px;
+  }
+  .section-title {
+    flex-wrap: wrap;
+  }
+  .orbit-calendar .calendar-month {
+    font-size: 19px;
+  }
+  .calendar-views button {
+    padding-inline: 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .button,
+  .fc .fc-event {
+    transition: none;
+  }
+  .button:active:not(:disabled) {
+    transform: none;
+  }
+}
+
+.course-tone-lavender {
+  --course-day: #ddd2ff;
+  --course-night: #514963;
+}
+.course-tone-sky {
+  --course-day: #c9e2ff;
+  --course-night: #40576b;
+}
+.course-tone-aqua {
+  --course-day: #c5ecea;
+  --course-night: #405f5e;
+}
+.course-tone-mint {
+  --course-day: #cdeccf;
+  --course-night: #4a604f;
+}
+.course-tone-butter {
+  --course-day: #f7e7a9;
+  --course-night: #655c40;
+}
+.course-tone-peach {
+  --course-day: #ffd8b5;
+  --course-night: #6b5647;
+}
+.course-tone-rose {
+  --course-day: #f6c9d8;
+  --course-night: #6a4f5c;
+}
+.course-tone-coral {
+  --course-day: #f5c2bc;
+  --course-night: #6b504c;
+}
+
+[class*="course-tone-"],
+.course-swatch,
+.palette-options label {
+  --course-fill: var(--course-day);
+}
+[data-theme="dark"] [class*="course-tone-"],
+[data-theme="dark"] .course-swatch,
+[data-theme="dark"] .palette-options label {
+  --course-fill: var(--course-night);
+}
+
+.fc .fc-col-header-cell-cushion {
+  display: block;
+}
+.calendar-day-label {
+  margin-inline: 4px;
+}
+
+/* Keep form selects consistently sized in Safari as well as Chrome. */
+.orbit-form select {
+  appearance: none;
+  padding-right: 32px;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--text-secondary) 50%),
+    linear-gradient(135deg, var(--text-secondary) 50%, transparent 50%);
+  background-position:
+    calc(100% - 16px) 50%,
+    calc(100% - 12px) 50%;
+  background-size: 4px 4px;
+  background-repeat: no-repeat;
+}
+
+@media (min-width: 960px) {
+  .anchored-editor {
+    padding: 20px;
+  }
+  .anchored-editor .dialog-header {
+    margin-bottom: 16px;
+  }
+  .anchored-editor .orbit-form fieldset {
+    gap: 12px;
+  }
+  .anchored-editor .orbit-form label {
+    gap: 6px;
+  }
+  .anchored-editor .orbit-form input:not([type="radio"]):not([type="hidden"]),
+  .anchored-editor .orbit-form select {
+    min-height: 36px;
+    padding-block: 8px;
+  }
+  .anchored-editor .field-help {
+    margin: 0;
+    font-size: 11px;
+    line-height: 1.5;
+  }
+  .anchored-editor .orbit-form .button {
+    min-height: 36px;
+  }
+}
+@media (min-width: 641px) and (max-width: 900px) {
+  .support-column {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .support-column .next-up-placeholder {
+    grid-column: auto;
+  }
+  .support-column .task-summary {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 901px) {
+  .support-column {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* Action acknowledgements overlay the workspace; pending/errors stay in context. */
+.action-notifications {
+  position: fixed;
+  z-index: 1000;
+  top: 82px;
+  right: 22px;
+  width: min(310px, calc(100vw - 32px));
+  pointer-events: none;
+}
+.action-notice-slot {
+  display: grid;
+  grid-template-rows: 1fr;
+  padding-bottom: 10px;
+  transition:
+    grid-template-rows 240ms ease,
+    padding 240ms ease;
+}
+.action-notice-slot.is-leaving {
+  grid-template-rows: 0fr;
+  padding-bottom: 0;
+}
+.action-notice {
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 13px 12px 13px 15px;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow:
+    0 8px 28px #00000018,
+    inset 3px 0 0 var(--accent);
+  pointer-events: auto;
+  animation: orbit-notice-in 380ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.action-notice-slot.is-leaving .action-notice {
+  animation: orbit-notice-out 240ms ease-in both;
+  padding-block: 0;
+  border-block-width: 0;
+  transition:
+    padding 240ms ease,
+    border-width 240ms ease;
+}
+.action-notice-icon {
+  color: var(--accent-text);
+  flex-shrink: 0;
+}
+.action-notice [role="status"] {
+  flex: 1;
+  min-width: 0;
+}
+.action-notice strong {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+}
+.action-notice span {
+  display: block;
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 16px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.action-notice button {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 6px;
+  width: 24px;
+  height: 24px;
+  color: var(--text-secondary);
+  background: transparent;
+  cursor: pointer;
+}
+.action-notice button:hover {
+  background: var(--hover);
+}
+.action-notice button:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+@keyframes orbit-notice-in {
+  0% {
+    transform: translateX(calc(100% + 30px));
+    opacity: 0;
+  }
+  78% {
+    transform: translateX(-3px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes orbit-notice-out {
+  to {
+    transform: translateX(calc(100% + 30px));
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .action-notice,
+  .action-notice-slot.is-leaving .action-notice {
+    animation: orbit-notice-fade 80ms linear both;
+    transition: none;
+  }
+  .action-notice-slot.is-leaving .action-notice {
+    animation-direction: reverse;
+  }
+  .action-notice-slot {
+    transition: none;
+  }
+}
+@keyframes orbit-notice-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Query the actual painted height, never the duration or slot geometry. */
+.fc .fc-timegrid-event {
+  padding: 2px 4px;
+}
+.fc .fc-timegrid-event .fc-event-main {
+  container-type: size;
+  container-name: event-card;
+  height: 100%;
+}
+.orbit-event {
+  padding: 0;
+  gap: 1px;
+  line-height: 13px;
+}
+.orbit-event strong {
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.orbit-event span,
+.orbit-event small {
+  font-size: 9px;
+  line-height: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fc-timegrid-event .orbit-event small {
+  display: none;
+}
+@container event-card (min-height: 44px) {
+  .orbit-event small:first-of-type {
+    display: block;
+  }
+}
+@container event-card (min-height: 59px) {
+  .fc-timegrid-event .orbit-event small {
+    display: block;
+  }
+}
+@container event-card (max-height: 27px) {
+  .orbit-event {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 4px;
+  }
+  .orbit-event strong {
+    flex: 1;
+    min-width: 0;
+  }
+  .orbit-event span {
+    flex-shrink: 0;
+    font-size: 9px;
+  }
+}
+.fc-daygrid-event .orbit-event {
+  flex-direction: row;
+  align-items: baseline;
+  gap: 4px;
+  min-width: 0;
+}
+.fc-daygrid-event .orbit-event strong {
+  flex-shrink: 1;
+}
+.fc-daygrid-event .orbit-event small {
+  display: none;
+}
+/* FullCalendar marks its shortest blocks independently of the data duration. */
+.fc .fc-timegrid-event-short {
+  padding-block: 0;
+}
+.fc-timegrid-event-short .orbit-event strong,
+.fc-timegrid-event-short .orbit-event span {
+  line-height: 12px;
+}
+/* Overlapping meetings have narrower columns: reserve space for the full time. */
+@container event-card (max-width: 80px) and (min-height: 28px) {
+  .orbit-event span {
+    white-space: normal;
+  }
+  .fc-timegrid-event .orbit-event small {
+    display: none;
+  }
+}
+@container event-card (max-width: 80px) and (min-height: 82px) {
+  .fc-timegrid-event .orbit-event small {
+    display: block;
+  }
+}
+
+/* Orbit date/time fields share a compact, keyboard-editable trigger. */
+.picker-field {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.picker-trigger {
+  position: relative;
+}
+.orbit-form .picker-trigger input {
+  width: 100%;
+  padding-right: 36px;
+  height: 38px;
+  font-size: 12px;
+}
+.picker-trigger > button {
+  position: absolute;
+  right: 3px;
+  top: 3px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+.picker-trigger > button:hover {
+  background: var(--hover);
+  color: var(--accent-text);
+}
+.picker-trigger > button:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
+}
+.picker-trigger > button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.orbit-picker-panel {
+  position: fixed;
+  margin: 0;
+  width: min(310px, calc(100vw - 24px));
+  max-width: none;
+  max-height: calc(100dvh - 24px);
+  overflow: auto;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface-raised);
+  color: var(--text);
+  box-shadow: var(--dialog-shadow);
+  animation: picker-enter 130ms ease-out;
+}
+.orbit-picker-panel::backdrop {
+  background: transparent;
+}
+.orbit-picker-panel h3 {
+  margin: 0 0 16px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.picker-month-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  gap: 8px;
+}
+.picker-month-heading strong {
+  font-size: 13px;
+}
+.picker-month-heading .button {
+  padding: 7px;
+  min-height: 30px;
+}
+.picker-date-grid [role="row"] {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+.picker-date-grid [role="columnheader"] {
+  font-size: 10px;
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 5px 0;
+}
+.picker-date-grid button {
+  position: relative;
+  min-width: 0;
+  height: 33px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 120ms;
+}
+.picker-date-grid button.outside-month {
+  color: var(--text-secondary);
+}
+.picker-date-grid button:hover {
+  background: var(--hover);
+}
+.picker-date-grid button[aria-selected="true"] {
+  background: var(--accent-soft);
+  color: var(--accent-text);
+  font-weight: 600;
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+.picker-date-grid button[aria-current="date"]::after {
+  content: "";
+  position: absolute;
+  height: 3px;
+  width: 3px;
+  border-radius: 50%;
+  background: currentColor;
+  bottom: 3px;
+  left: calc(50% - 1.5px);
+}
+.picker-date-grid button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.orbit-picker-panel button:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
+}
+.picker-footer {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+.picker-footer > span {
+  flex: 1;
+}
+.picker-footer .button {
+  padding: 7px 9px;
+  min-height: 32px;
+  font-size: 11px;
+}
+.picker-time-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.picker-time-controls > label {
+  flex: 1;
+  min-width: 0;
+  font-size: 10px;
+  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.orbit-form .picker-time-controls input[type="text"] {
+  min-width: 0;
+  width: 100%;
+  font-size: 17px;
+  text-align: center;
+  padding: 8px;
+}
+.picker-time-controls > span {
+  padding-top: 16px;
+}
+.orbit-form .picker-period {
+  display: flex;
+  flex-direction: row;
+  gap: 2px;
+  padding: 3px;
+  margin: 16px 0 0;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+}
+.picker-period label {
+  position: relative;
+  display: block;
+}
+.picker-period input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.picker-period span {
+  display: block;
+  padding: 7px 8px;
+  font-size: 11px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.picker-period input:checked + span {
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+.picker-period input:focus-visible + span {
+  outline: 2px solid var(--focus);
+}
+.picker-minutes {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 4px;
+  margin-top: 14px;
+}
+.picker-minutes button {
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-size: 11px;
+  cursor: pointer;
+}
+.picker-minutes button[aria-pressed="true"] {
+  background: var(--accent-soft);
+  color: var(--accent-text);
+  border-color: var(--accent);
+}
+@keyframes picker-enter {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .orbit-picker-panel {
+    animation: none;
+  }
+  .picker-date-grid button {
+    transition: none;
+  }
+}
